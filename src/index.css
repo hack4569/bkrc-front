@@ -1,0 +1,97 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* 앱 전체는 한 화면 고정 — 페이지 자체 스크롤 차단 */
+  overflow: hidden;
+}
+
+/* 모바일 주소창을 고려한 동적 뷰포트 높이 (100vh는 주소창 높이만큼 넘침) */
+.device {
+  height: 100dvh;
+}
+
+/* 가로 책 슬라이드 — 한 책이 화면을 꽉 채우고 좌우 스냅 */
+.book-summary {
+  height: 100%;
+}
+
+/* 섹션 컨테이너 — 한 번에 하나만 표시
+   하단 220px = summary-about(책 표지·버튼) + 그라데이션 영역 확보 */
+.summary-content {
+  height: calc(100% - 220px);
+  overflow: hidden;
+}
+
+/* 상하 스와이프에 맞춘 페이지 전환 효과.
+   원본 app.css의 fadeInLeft(좌→우)는 좌우 슬라이드용이라,
+   상하 넘김 방향에 맞게 selector specificity를 높여 덮어쓴다.
+   다음 페이지 → 아래에서 솟아오름 / 이전 페이지 → 위에서 내려옴 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.summary-content--next .summary-content-section--active > * {
+  animation-name: fadeInUp;
+}
+.summary-content--prev .summary-content-section--active > * {
+  animation-name: fadeInDown;
+}
+
+/* 목차 스크롤 영역 — 스크롤바 숨김 (하단 페이드가 더 있음 표시) */
+.toc-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.toc-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 추천 제외 확인 다이얼로그 */
+.remove-confirm-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.remove-confirm-dialog {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 20px;
+  max-width: 300px;
+  width: 80%;
+  text-align: center;
+}
+
+.remove-confirm-dialog__text {
+  margin: 0 0 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.remove-confirm-dialog__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* 로그인 화면의 회원가입 안내 링크 */
+.sign-in-form__footer {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+.sign-in-form__footer a {
+  color: #333;
+  font-weight: 600;
+  text-decoration: underline;
+}

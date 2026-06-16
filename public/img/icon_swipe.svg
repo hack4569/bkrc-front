@@ -1,0 +1,21 @@
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 터치 포인트 -->
+  <circle cx="26" cy="26" r="5" fill="#333"/>
+  <circle cx="26" cy="26" r="3" fill="#fff"/>
+
+  <!-- 위 화살표 -->
+  <line x1="26" y1="19" x2="26" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="22,11 26,7 30,11" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- 아래 화살표 -->
+  <line x1="26" y1="33" x2="26" y2="45" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="22,41 26,45 30,41" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- 왼쪽 화살표 -->
+  <line x1="19" y1="26" x2="7" y2="26" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="11,22 7,26 11,30" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- 오른쪽 화살표 -->
+  <line x1="33" y1="26" x2="45" y2="26" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <polyline points="41,22 45,26 41,30" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
