@@ -3,7 +3,12 @@ import { getRecommendBooks } from '../api/books'
 import { getMe, likeBook, cancelLike } from '../api/user'
 import type { Book, BookCategory, BookPage, RecommendView } from '../types'
 
-const COLORS: Array<'violet' | 'blue' | 'pitch'> = ['pitch', 'pitch', 'pitch']
+const COLORS: Book['color'][] = [
+  'violet', 'blue', 'pitch',
+  'coral', 'mint', 'lemon', 'peach', 'sky', 'rose', 'lavender', 'sunrise',
+  'aqua', 'cherry', 'honey', 'seafoam', 'blossom', 'citrus', 'tangerine',
+  'berry', 'daybreak',
+]
 
 export function mapRecommendViewToBook(view: RecommendView): Book {
   const pages: Book['pages'] = view.recommendCommentList.flatMap((comment): BookPage[] => {
@@ -41,7 +46,7 @@ export function mapRecommendViewToBook(view: RecommendView): Book {
     link: view.link,
     category: view.categoryName as BookCategory,
     publisher: '',
-    color: COLORS[view.itemId % 3],
+    color: COLORS[view.itemId % COLORS.length],
     pages,
     recommendTitle,
     recommendBody,

@@ -22,7 +22,11 @@ export type Book = {
   publisher: string
   author: string
   link: string
-  color: 'violet' | 'blue' | 'pitch'
+  color:
+    | 'violet' | 'blue' | 'pitch'
+    | 'coral' | 'mint' | 'lemon' | 'peach' | 'sky' | 'rose' | 'lavender' | 'sunrise'
+    | 'aqua' | 'cherry' | 'honey' | 'seafoam' | 'blossom' | 'citrus' | 'tangerine'
+    | 'berry' | 'daybreak'
   // 위아래로 넘겨보는 페이지들 (인용 → 소개 → 핵심 → 추천 → 리뷰)
   pages: BookPage[]
   // 추천 모달용 — 책별 맞춤 추천 문구

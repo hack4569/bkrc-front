@@ -376,9 +376,77 @@
 .book-summary--pitch {
     background: #ffffff;
 }
+.book-summary--coral {
+    background: linear-gradient(to bottom, #f8f4f0 0%, #f0c9b0 45%, #ff7a59 100%);
+}
+.book-summary--mint {
+    background: linear-gradient(to bottom, #f0f8f4 0%, #b8e6c9 45%, #3ecf8e 100%);
+}
+.book-summary--lemon {
+    background: linear-gradient(to bottom, #fdf8ec 0%, #f5e08a 45%, #ffd23f 100%);
+}
+.book-summary--peach {
+    background: linear-gradient(to bottom, #fff6ef 0%, #ffd9b3 45%, #ff9d5c 100%);
+}
+.book-summary--sky {
+    background: linear-gradient(to bottom, #f0f7fc 0%, #bfe3f5 45%, #5cc8ec 100%);
+}
+.book-summary--rose {
+    background: linear-gradient(to bottom, #fdf1f4 0%, #f6c9d6 45%, #f76a9a 100%);
+}
+.book-summary--lavender {
+    background: linear-gradient(to bottom, #f6f2fb 0%, #d9c5ef 45%, #b083e0 100%);
+}
+.book-summary--sunrise {
+    background: linear-gradient(to bottom, #fff6e8 0%, #ffb454 45%, #ff6f91 100%);
+}
+.book-summary--aqua {
+    background: linear-gradient(to bottom, #eefcfb 0%, #aef0e6 45%, #33d6c2 100%);
+}
+.book-summary--cherry {
+    background: linear-gradient(to bottom, #fdf0f2 0%, #f7b8c4 45%, #ee3f66 100%);
+}
+.book-summary--honey {
+    background: linear-gradient(to bottom, #fef8ec 0%, #f6d78a 45%, #e8a53d 100%);
+}
+.book-summary--seafoam {
+    background: linear-gradient(to bottom, #eef9f6 0%, #bfe8dc 45%, #6ecbb0 100%);
+}
+.book-summary--blossom {
+    background: linear-gradient(to bottom, #fdf2f7 0%, #f0c7e0 45%, #e587c8 100%);
+}
+.book-summary--citrus {
+    background: linear-gradient(to bottom, #f7fbe8 0%, #e0ee9a 45%, #b8dd3f 100%);
+}
+.book-summary--tangerine {
+    background: linear-gradient(to bottom, #fff5ec 0%, #ffc98a 45%, #ff9130 100%);
+}
+.book-summary--berry {
+    background: linear-gradient(to bottom, #f7f0fb 0%, #dcb3ea 45%, #b855d9 100%);
+}
+.book-summary--daybreak {
+    background: linear-gradient(to bottom, #fbfaf3 0%, #d9ecf7 45%, #9fd0ea 100%);
+}
 .book-summary--violet::after,
 .book-summary--blue::after,
-.book-summary--pitch::after {
+.book-summary--pitch::after,
+.book-summary--coral::after,
+.book-summary--mint::after,
+.book-summary--lemon::after,
+.book-summary--peach::after,
+.book-summary--sky::after,
+.book-summary--rose::after,
+.book-summary--lavender::after,
+.book-summary--sunrise::after,
+.book-summary--aqua::after,
+.book-summary--cherry::after,
+.book-summary--honey::after,
+.book-summary--seafoam::after,
+.book-summary--blossom::after,
+.book-summary--citrus::after,
+.book-summary--tangerine::after,
+.book-summary--berry::after,
+.book-summary--daybreak::after {
     background: none;
 }
 .summary-content {
@@ -430,6 +498,23 @@
 .book-summary--pitch .summary-content-section__title {
     color: #6b35b0;
 }
+.book-summary--coral .summary-content-section__title { color: #c9432a; }
+.book-summary--mint .summary-content-section__title { color: #1f8f5f; }
+.book-summary--lemon .summary-content-section__title { color: #b98900; }
+.book-summary--peach .summary-content-section__title { color: #d9702b; }
+.book-summary--sky .summary-content-section__title { color: #1b7fb0; }
+.book-summary--rose .summary-content-section__title { color: #c93b6b; }
+.book-summary--lavender .summary-content-section__title { color: #7a3bc9; }
+.book-summary--sunrise .summary-content-section__title { color: #d9436b; }
+.book-summary--aqua .summary-content-section__title { color: #0f9c8c; }
+.book-summary--cherry .summary-content-section__title { color: #c22348; }
+.book-summary--honey .summary-content-section__title { color: #b9770a; }
+.book-summary--seafoam .summary-content-section__title { color: #2f9c78; }
+.book-summary--blossom .summary-content-section__title { color: #b8459a; }
+.book-summary--citrus .summary-content-section__title { color: #7fa312; }
+.book-summary--tangerine .summary-content-section__title { color: #d9670a; }
+.book-summary--berry .summary-content-section__title { color: #8a2ec2; }
+.book-summary--daybreak .summary-content-section__title { color: #2b7ea3; }
 .summary-content-section__icon {
     width: 23px;
     height: 22px;
@@ -443,6 +528,23 @@
 .book-summary--pitch .summary-content-section__icon {
     fill: #6b35b0;
 }
+.book-summary--coral .summary-content-section__icon { fill: #c9432a; }
+.book-summary--mint .summary-content-section__icon { fill: #1f8f5f; }
+.book-summary--lemon .summary-content-section__icon { fill: #b98900; }
+.book-summary--peach .summary-content-section__icon { fill: #d9702b; }
+.book-summary--sky .summary-content-section__icon { fill: #1b7fb0; }
+.book-summary--rose .summary-content-section__icon { fill: #c93b6b; }
+.book-summary--lavender .summary-content-section__icon { fill: #7a3bc9; }
+.book-summary--sunrise .summary-content-section__icon { fill: #d9436b; }
+.book-summary--aqua .summary-content-section__icon { fill: #0f9c8c; }
+.book-summary--cherry .summary-content-section__icon { fill: #c22348; }
+.book-summary--honey .summary-content-section__icon { fill: #b9770a; }
+.book-summary--seafoam .summary-content-section__icon { fill: #2f9c78; }
+.book-summary--blossom .summary-content-section__icon { fill: #b8459a; }
+.book-summary--citrus .summary-content-section__icon { fill: #7fa312; }
+.book-summary--tangerine .summary-content-section__icon { fill: #d9670a; }
+.book-summary--berry .summary-content-section__icon { fill: #8a2ec2; }
+.book-summary--daybreak .summary-content-section__icon { fill: #2b7ea3; }
 .summary-content-section__content {
     margin: 28px 0 0;
     line-height: 1.38;

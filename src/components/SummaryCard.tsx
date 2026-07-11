@@ -37,6 +37,30 @@ const PITCH_COLORS: [string, string][] = [
   ['rgba(60,40,180,1)',  'rgba(230,80,80,0.85)'],    // 미드나잇 블루 + 코랄
 ]
 
+// pitch 외 애니메이션 색상들은 색상당 고유 톤 하나씩만 사용 (이름이 곧 색을 나타내므로)
+const ANIMATED_PALETTES: Partial<Record<Book['color'], [string, string]>> = {
+  coral:     ['rgba(255,122,89,1)',  'rgba(255,196,120,0.85)'],
+  mint:      ['rgba(62,207,142,1)',  'rgba(120,220,235,0.85)'],
+  lemon:     ['rgba(255,210,63,1)',  'rgba(255,150,90,0.85)'],
+  peach:     ['rgba(255,157,92,1)',  'rgba(255,200,140,0.85)'],
+  sky:       ['rgba(92,200,236,1)',  'rgba(150,140,240,0.85)'],
+  rose:      ['rgba(247,106,154,1)', 'rgba(255,170,190,0.85)'],
+  lavender:  ['rgba(176,131,224,1)', 'rgba(140,190,240,0.85)'],
+  sunrise:   ['rgba(255,111,145,1)', 'rgba(255,180,84,0.85)'],
+  aqua:      ['rgba(51,214,194,1)',  'rgba(120,230,220,0.85)'],
+  cherry:    ['rgba(238,63,102,1)',  'rgba(255,140,160,0.85)'],
+  honey:     ['rgba(232,165,61,1)',  'rgba(255,210,120,0.85)'],
+  seafoam:   ['rgba(110,203,176,1)', 'rgba(160,230,210,0.85)'],
+  blossom:   ['rgba(229,135,200,1)', 'rgba(240,180,220,0.85)'],
+  citrus:    ['rgba(184,221,63,1)',  'rgba(230,230,120,0.85)'],
+  tangerine: ['rgba(255,145,48,1)',  'rgba(255,195,110,0.85)'],
+  berry:     ['rgba(184,85,217,1)',  'rgba(220,150,235,0.85)'],
+  daybreak:  ['rgba(159,208,234,1)', 'rgba(220,235,250,0.85)'],
+}
+
+// 애니메이션 배경을 쓰는 색상 목록 — pitch(4가지 변형) + 위 팔레트 보유 색상들
+const ANIMATED_COLORS = new Set<Book['color']>(['pitch', ...(Object.keys(ANIMATED_PALETTES) as Book['color'][])])
+
 type PitchParams = {
   bigColor: string
   smallColor: string
@@ -47,9 +71,9 @@ type PitchParams = {
   phase: number   // 카드별 위상 오프셋
 }
 
-function getPitchParams(id: string | number): PitchParams {
+function getPitchParams(color: Book['color'], id: string | number): PitchParams {
   const h = [...String(id)].reduce((a, c) => a + c.charCodeAt(0), 0)
-  const [bigColor, smallColor] = PITCH_COLORS[h % 4]
+  const [bigColor, smallColor] = color === 'pitch' ? PITCH_COLORS[h % 4] : ANIMATED_PALETTES[color]!
   const bigOnRight = (h >> 2) % 2 === 0
   return {
     bigColor,
@@ -272,7 +296,7 @@ export function SummaryCard({
   const liRef = useRef<HTMLLIElement>(null)
 
   const pitchParams = useMemo(
-    () => book.color === 'pitch' ? getPitchParams(book.id) : null,
+    () => ANIMATED_COLORS.has(book.color) ? getPitchParams(book.color, book.id) : null,
     [book.id, book.color],
   )
 
@@ -283,13 +307,13 @@ export function SummaryCard({
     const t0 = performance.now()
     function tick(now: number) {
       const t = (now - t0) / 1000
-      const bigR   = 125 + 5  * Math.sin(t * 1.0 + params.phase)
-      const smallR = 65  + 15 * Math.sin(t * 1.25 + params.phase + 1.3)
+      const bigR   = 125 + 5  * Math.sin(t * 0.4 + params.phase)
+      const smallR = 65  + 15 * Math.sin(t * 0.5 + params.phase + 1.3)
       // 각 축 독립 sin으로 ±5% 범위 내 부드럽게 이동
-      const bigX   = params.bigX   + 5 * Math.sin(t * 1.7 + params.phase + 0.5)
-      const bigY   = params.bigY   + 5 * Math.sin(t * 1.3 + params.phase + 1.1)
-      const smallX = params.smallX + 5 * Math.sin(t * 2.1 + params.phase + 2.3)
-      const smallY = params.smallY + 5 * Math.sin(t * 1.9 + params.phase + 0.8)
+      const bigX   = params.bigX   + 5 * Math.sin(t * 0.68 + params.phase + 0.5)
+      const bigY   = params.bigY   + 5 * Math.sin(t * 0.52 + params.phase + 1.1)
+      const smallX = params.smallX + 5 * Math.sin(t * 0.84 + params.phase + 2.3)
+      const smallY = params.smallY + 5 * Math.sin(t * 0.76 + params.phase + 0.8)
       if (liRef.current) {
         liRef.current.style.background = buildPitchBackground(params, bigR, smallR, bigX, bigY, smallX, smallY)
       }
