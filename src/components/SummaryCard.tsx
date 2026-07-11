@@ -159,7 +159,7 @@ const BADGE_COLOR = '#6b35b0'
 
 const TYPE_CONFIG: Record<BadgeVariant, { label: string; color: string; accent: string; icon: 'book' | 'spark' | 'pen' | 'list' }> = {
   description: { label: '소개',    color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'book' },
-  ai:          { label: 'AI 추천', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'spark' },
+  ai:          { label: 'Essence', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'spark' },
   md:          { label: 'MD 추천', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'pen' },
   toc:         { label: '목차',    color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'list' },
 }
@@ -200,6 +200,19 @@ function TocPageContent({ items }: { items: string[] }) {
   )
 }
 
+function TextWithLineBreaks({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/<br\s*\/?>/i).map((line, i, arr) => (
+        <span key={i}>
+          {line}
+          {i < arr.length - 1 && <br />}
+        </span>
+      ))}
+    </>
+  )
+}
+
 function PageContent({ page }: { page: BookPage }) {
   const { containerRef, fadeContainerStyle } = useFadeHeight([])
 
@@ -208,7 +221,7 @@ function PageContent({ page }: { page: BookPage }) {
       <>
         <QuoteIcon className="summary-content-section__icon" style={{ flexShrink: 0 }} />
         <div ref={containerRef} style={{ flex: 1, minHeight: 0, ...fadeContainerStyle }}>
-          <p className="summary-content-section__content">{page.content}</p>
+          <p className="summary-content-section__content"><TextWithLineBreaks text={page.content} /></p>
         </div>
       </>
     )
@@ -221,7 +234,7 @@ function PageContent({ page }: { page: BookPage }) {
       <>
         <TypeBadge variant={page.variant} />
         <div ref={containerRef} style={{ flex: 1, minHeight: 0, ...fadeContainerStyle }}>
-          <p className="summary-content-section__content">{page.content}</p>
+          <p className="summary-content-section__content"><TextWithLineBreaks text={page.content} /></p>
         </div>
       </>
     )
@@ -231,7 +244,7 @@ function PageContent({ page }: { page: BookPage }) {
     <>
       <h1 className="summary-content-section__title" style={ellipsis}>{page.label}</h1>
       <div ref={containerRef} style={{ flex: 1, minHeight: 0, ...fadeContainerStyle }}>
-        <p className="summary-content-section__content">{page.content}</p>
+        <p className="summary-content-section__content"><TextWithLineBreaks text={page.content} /></p>
       </div>
       <div className="summary-content-section__avatar">
         <img className="summary-content-section__avatar-image" src="/img/avatar.png" alt="" />
