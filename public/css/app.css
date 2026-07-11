@@ -488,7 +488,8 @@
 }
 .summary-about__name {
     margin-left: 18px;
-    width: 50%;
+    flex: 1;
+    min-width: 0;
     word-break: keep-all;
     line-height: 1.5;
     color: #fff;
@@ -1376,9 +1377,6 @@
     }
     .summary-about {
         bottom: 8%;
-    }
-    .summary-about__name {
-        width: 50%;
     }
     .recommendation-modal__container::after {
         height: 40%;
