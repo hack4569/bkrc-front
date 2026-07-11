@@ -17,10 +17,6 @@ type BookFeedProps = {
   enableGuide?: boolean
 }
 
-function getTodayString(): string {
-  return new Intl.DateTimeFormat('ko-KR').format(new Date())
-}
-
 // 좌우=책 전환 / 상하=섹션 전환 스와이프 피드. 데이터 소스를 모르고 books를 받기만 한다.
 export function BookFeed({
   books,
@@ -43,9 +39,7 @@ export function BookFeed({
 
   useEffect(() => {
     if (!enableGuide) return
-    const todayString = getTodayString()
-    const stored = localStorage.getItem('guideHideDate')
-    if (stored !== todayString) {
+    if (localStorage.getItem('guideDismissed') !== 'true') {
       setShowGuide(true)
     }
   }, [enableGuide])
