@@ -36,7 +36,8 @@ export function LoginPage() {
         },
       ]}
       submitLabel="로그인"
-      cancelTo="/"
+      showCancel={false}
+      showMenu
       error={error}
       onSubmit={handleSubmit}
       footer={

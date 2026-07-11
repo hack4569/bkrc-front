@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { SubHeader } from './SubHeader'
+import { GlobalNav } from './GlobalNav'
 
 export type AccountField = {
   name: string
@@ -15,7 +17,9 @@ type Props = {
   title: string
   fields: AccountField[]
   submitLabel: string
-  cancelTo: string
+  cancelTo?: string
+  showCancel?: boolean
+  showMenu?: boolean
   error?: string
   onSubmit: () => void
   footer?: ReactNode
@@ -23,10 +27,28 @@ type Props = {
 }
 
 // 로그인·회원가입·회원수정이 공유하는 폼 (원본 sign-in-form 디자인 재사용)
-export function AccountForm({ title, fields, submitLabel, cancelTo, error, onSubmit, footer, mode: _mode }: Props) {
+export function AccountForm({
+  title,
+  fields,
+  submitLabel,
+  cancelTo,
+  showCancel = true,
+  showMenu = false,
+  error,
+  onSubmit,
+  footer,
+  mode: _mode,
+}: Props) {
+  const [navOpen, setNavOpen] = useState(false)
+
   return (
-    <main className="app">
-      <SubHeader title={title} showMenu={false} />
+    <main className={`app${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
+      <SubHeader
+        title={title}
+        showMenu={showMenu}
+        menuOpen={navOpen}
+        onMenuOpen={() => setNavOpen((v) => !v)}
+      />
       <main className="app-main">
         <form
           className="sign-in-form"
@@ -80,12 +102,16 @@ export function AccountForm({ title, fields, submitLabel, cancelTo, error, onSub
 
           <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
             <button type="submit" className="button button--form button--black" style={{ width: '100%', height: 52 }}>{submitLabel}</button>
-            <Link to={cancelTo} className="button button--form button--gray" style={{ width: '100%', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>취소</Link>
+            {showCancel && cancelTo && (
+              <Link to={cancelTo} className="button button--form button--gray" style={{ width: '100%', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>취소</Link>
+            )}
           </div>
 
           {footer && <div style={{ marginTop: 18, textAlign: 'center' }}>{footer}</div>}
         </form>
       </main>
+
+      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
     </main>
   )
 }
