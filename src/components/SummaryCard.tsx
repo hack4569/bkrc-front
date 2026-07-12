@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { Book, BookPage } from '../types'
 import { QuoteIcon } from './QuoteIcon'
+import { LinkIcon } from './LinkIcon'
 
 type Props = {
   book: Book
@@ -406,12 +407,19 @@ export function SummaryCard({
           onClick={handleBookClick}
           style={{ display: 'contents', cursor: 'pointer' }}
         >
-          <img
-            className="summary-about__cover"
-            src={book.cover}
-            alt={book.title}
+          <span
+            className="summary-about__cover-wrap"
             style={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          />
+          >
+            <img
+              className="summary-about__cover"
+              src={book.cover}
+              alt={book.title}
+            />
+            <span className="summary-about__cover-badge">
+              <LinkIcon />
+            </span>
+          </span>
           <p
             className="summary-about__name"
             style={{ ...ellipsis, cursor: 'pointer', pointerEvents: 'auto' }}
