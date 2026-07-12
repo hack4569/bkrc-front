@@ -588,6 +588,17 @@
     font-weight: 600;
     line-height: 0.82;
 }
+.summary-content-section__content--essence {
+    position: relative;
+    margin-top: 6px;
+    font-family: 'Noto Serif KR', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.95rem;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
+    color: #2b2b2b;
+}
 .toc-list {
     margin: 26px 0 0;
     padding: 0;
@@ -1509,6 +1520,9 @@
     .summary-content-section--introduction .summary-content-section__content--description {
         font-size: 1.8rem;
     }
+    .summary-content-section--introduction .summary-content-section__content--essence {
+        font-size: 1.85rem;
+    }
 
 }
 @media (max-height: 740px) {
@@ -1520,6 +1534,9 @@
     }
     .summary-content-section--introduction .summary-content-section__content--description {
         font-size: 1.6rem;
+    }
+    .summary-content-section--introduction .summary-content-section__content--essence {
+        font-size: 1.65rem;
     }
     .summary-content-section--quote {
         padding-top: 38px;
@@ -1557,6 +1574,9 @@
     }
     .summary-content-section--introduction .summary-content-section__content--description {
         font-size: 1.55rem;
+    }
+    .summary-content-section--introduction .summary-content-section__content--essence {
+        font-size: 1.6rem;
     }
     .summary-content-section--quote {
         padding-top: 26px;
