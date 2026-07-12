@@ -246,11 +246,14 @@ function PageContent({ page }: { page: BookPage }) {
     return <TocPageContent items={page.items} />
   }
   if (page.kind === 'text') {
+    const contentClass = page.variant === 'description'
+      ? 'summary-content-section__content summary-content-section__content--description'
+      : 'summary-content-section__content'
     return (
       <>
         <TypeBadge variant={page.variant} />
         <div ref={containerRef} style={{ flex: 1, minHeight: 0, ...fadeContainerStyle }}>
-          <p className="summary-content-section__content"><TextWithLineBreaks text={page.content} /></p>
+          <p className={contentClass}><TextWithLineBreaks text={page.content} /></p>
         </div>
       </>
     )

@@ -574,6 +574,20 @@
     font-size: 1.65rem;
     line-height: 1.5;
 }
+.summary-content-section__content--description {
+    font-size: 1.9rem;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
+}
+.summary-content-section__content--description::first-letter {
+    float: left;
+    padding: 4px 10px 0 0;
+    color: #6b35b0;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 3.1em;
+    font-weight: 600;
+    line-height: 0.82;
+}
 .toc-list {
     margin: 26px 0 0;
     padding: 0;
@@ -1492,6 +1506,9 @@
     .summary-content-section--introduction .summary-content-section__content {
         font-size: 1.7rem;
     }
+    .summary-content-section--introduction .summary-content-section__content--description {
+        font-size: 1.8rem;
+    }
 
 }
 @media (max-height: 740px) {
@@ -1500,6 +1517,9 @@
     }
     .summary-content-section--introduction .summary-content-section__content {
         font-size: 1.5rem;
+    }
+    .summary-content-section--introduction .summary-content-section__content--description {
+        font-size: 1.6rem;
     }
     .summary-content-section--quote {
         padding-top: 38px;
@@ -1534,6 +1554,9 @@
     }
     .summary-content-section--introduction .summary-content-section__content {
         font-size: 1.45rem;
+    }
+    .summary-content-section--introduction .summary-content-section__content--description {
+        font-size: 1.55rem;
     }
     .summary-content-section--quote {
         padding-top: 26px;
