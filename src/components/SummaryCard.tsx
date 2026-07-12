@@ -115,17 +115,6 @@ function canScrollInDirection(el: EventTarget | null, dir: 'down' | 'up'): boole
   return false
 }
 
-const TOC_ITEM_STYLE: React.CSSProperties = {
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  userSelect: 'none',
-  WebkitTapHighlightColor: 'transparent',
-  fontSize: '0.85rem',
-  lineHeight: 1.35,
-  margin: 0,
-}
-
 // summary-about: bottom:50px, cover height:110px
 const COVER_BOTTOM = 50
 const COVER_HEIGHT = 110
@@ -214,11 +203,14 @@ function TocPageContent({ items }: { items: string[] }) {
     <>
       <TypeBadge variant="toc" />
       <div ref={containerRef} style={{ flex: 1, minHeight: 0, ...fadeContainerStyle }}>
-        <ul style={{ margin: '28px 0 0', padding: 0, listStyle: 'none', WebkitTapHighlightColor: 'transparent' }}>
+        <ol className="toc-list">
           {items.map((item, i) => (
-            <li key={i} style={TOC_ITEM_STYLE}>{item}</li>
+            <li key={i} className="toc-list__item">
+              <span className="toc-list__index">{String(i + 1).padStart(2, '0')}</span>
+              <span className="toc-list__text">{item}</span>
+            </li>
           ))}
-        </ul>
+        </ol>
       </div>
     </>
   )
