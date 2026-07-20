@@ -579,15 +579,6 @@
     line-height: 1.5;
     letter-spacing: -0.3px;
 }
-.summary-content-section__content--description::first-letter {
-    float: left;
-    padding: 4px 10px 0 0;
-    color: #6b35b0;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 3.1em;
-    font-weight: 600;
-    line-height: 0.82;
-}
 .summary-content-section__content--essence {
     position: relative;
     margin-top: 6px;
