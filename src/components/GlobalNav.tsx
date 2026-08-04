@@ -38,12 +38,13 @@ export function GlobalNav({ isOpen, onClose }: GlobalNavProps) {
           <li className="global-nav-item">
             <Link to="/" className="global-nav-link" onClick={onClose}>
               <img className="global-nav-link__icon" src="/img/icon_book.svg" alt="" />
-              <span className="global-nav-link__name">책추천</span>
+              <span className="global-nav-link__name">오늘의 추천책</span>
             </Link>
           </li>
-          <li className="global-nav-item" style={{ display: 'none' }}>
-            <Link to="/recommend" className="global-nav-link" onClick={onClose}>
-              <span className="global-nav-link__name">추천하기</span>
+          <li className="global-nav-item">
+            <Link to={isLoggedIn ? '/recommend' : '/login'} className="global-nav-link" onClick={onClose}>
+              <img className="global-nav-link__icon" src="/img/icon_add.png" alt="" />
+              <span className="global-nav-link__name">책 추천하기</span>
             </Link>
           </li>
         </ul>

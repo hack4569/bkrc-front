@@ -11,6 +11,12 @@ export function installMockApi(api: AxiosInstance) {
   // GET /v1/aladin/books/recommend/user
   mock.onGet('/v1/aladin/books/recommend/user').reply(200, mockBooks)
 
+  mock.onPost('/v1/aladin/books/recommend/user').reply((config) => {
+    const payload = JSON.parse(config.data || '{}') as typeof mockUser.recommendedBooks[number]
+    mockUser.recommendedBooks.unshift({ ...payload, approved: 'W' })
+    return [200, mockUser.recommendedBooks[0]]
+  })
+
   // POST /login
   mock.onPost('/login').reply((config) => {
     const payload = JSON.parse(config.data || '{}') as { loginId?: string; password?: string }
@@ -41,7 +47,7 @@ export function installMockApi(api: AxiosInstance) {
         link: book?.link ?? 'https://www.aladin.co.kr/',
       }
     })
-    return [200, { loginId, likedBooks }]
+    return [200, { loginId, likedBooks, recommendedBooks: mockUser.recommendedBooks }]
   })
 
   // PUT /v1/member/:loginId (회원 정보 수정)
@@ -66,6 +72,27 @@ export function installMockApi(api: AxiosInstance) {
 
   // POST /v1/history (열람 이력 저장)
   mock.onPost('/v1/history').reply(200, {})
+
+  mock.onPut(/\/v1\/aladin\/books\/recommend\/\d+$/).reply((config) => {
+    const itemId = Number(config.url?.split('/').pop())
+    const payload = JSON.parse(config.data || '{}') as { recommendation?: string }
+    const recommendation = mockUser.recommendedBooks.find((item) => item.itemId === itemId)
+    if (!recommendation) return [404, { detail: '추천 정보를 찾을 수 없습니다.' }]
+    if (recommendation.approved !== 'N') {
+      return [409, { detail: '미승인 상태의 추천만 수정할 수 있습니다.' }]
+    }
+    recommendation.recommendation = payload.recommendation ?? recommendation.recommendation
+    recommendation.approved = 'W'
+    return [200, recommendation]
+  })
+
+  mock.onGet(/\/v1\/aladin\/books\/recommend\/\d+$/).reply((config) => {
+    const itemId = Number(config.url?.split('/').pop())
+    const recommendation = mockUser.recommendedBooks.find((item) => item.itemId === itemId)
+    return recommendation
+      ? [200, recommendation]
+      : [404, { detail: '추천 정보를 찾을 수 없습니다.' }]
+  })
 
   mock.onAny().passThrough()
 }

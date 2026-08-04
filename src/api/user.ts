@@ -3,7 +3,7 @@ import type { LikeResult, UserProfile } from '../types'
 
 export async function getMe(): Promise<UserProfile> {
   const { data } = await api.get<UserProfile>('/v1/member/me')
-  return data
+  return { ...data, recommendedBooks: data.recommendedBooks ?? [] }
 }
 
 export async function likeBook(itemId: number): Promise<LikeResult> {

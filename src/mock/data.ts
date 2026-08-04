@@ -17,6 +17,14 @@ export interface RecommendView {
 export interface MockUser {
   loginId: string
   likedBooks: LikedBook[]
+  recommendedBooks: {
+    itemId: number
+    title: string
+    cover: string
+    link: string
+    approved: 'Y' | 'N' | 'W'
+    recommendation: string
+  }[]
 }
 
 export interface LikedBook {
@@ -191,4 +199,14 @@ export const mockBooks: RecommendView[] = [
 export const mockUser: MockUser = {
   loginId: 'user',
   likedBooks: [],
+  recommendedBooks: [
+    {
+      itemId: mockBooks[0].itemId,
+      title: mockBooks[0].title,
+      cover: mockBooks[0].cover,
+      link: mockBooks[0].link,
+      approved: 'W',
+      recommendation: '복잡한 면역학을 쉽고 재미있게 이해하고 싶은 분께 추천합니다.',
+    },
+  ],
 }

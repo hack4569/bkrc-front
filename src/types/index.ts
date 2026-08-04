@@ -52,6 +52,31 @@ export type RecommendView = {
   recommendCommentList: BookComment[]
 }
 
+export type BookSearchItem = {
+  itemId: number
+  title: string
+  author: string
+  cover: string
+  link: string
+}
+
+export type CreateBookRecommendation = {
+  itemId: number
+  link: string
+  cover: string
+  title: string
+  recommendation: string
+}
+
+export type MyRecommendation = {
+  itemId: number
+  title: string
+  cover: string
+  link: string
+  approved: 'Y' | 'N' | 'W'
+  recommendation: string
+}
+
 export type LikedBook = {
   likeId: number
   itemId: number
@@ -70,6 +95,7 @@ export type LikeResult = {
 export type UserProfile = {
   loginId: string
   likedBooks: LikedBook[] | null
+  recommendedBooks: MyRecommendation[]
 }
 
 export type ToggleFavoriteResult = {
