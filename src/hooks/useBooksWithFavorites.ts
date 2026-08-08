@@ -25,6 +25,8 @@ export function mapRecommendViewToBook(view: RecommendView): Book {
         return [{ kind: 'text' as const, label: '소개', variant: 'description' as const, content: comment.comment }]
       case 'aiRecommend':
         return [{ kind: 'text' as const, label: 'Essence', variant: 'ai' as const, content: comment.comment }]
+      case 'user':
+        return [{ kind: 'text' as const, label: '사용자 추천', variant: 'user' as const, content: comment.comment }]
       case 'mdRecommend':
         return [{ kind: 'text' as const, label: 'MD 추천', variant: 'md' as const, content: comment.comment }]
       default:

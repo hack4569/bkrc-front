@@ -6,7 +6,7 @@ export type BookCategory = string
 //   text   → summary-content-section--introduction (라벨 + 본문)
 //   review → summary-content-section--review (라벨 + 본문 + 리뷰어 아바타)
 //   toc    → 목차 (라벨 + 항목 리스트)
-export type TextVariant = 'description' | 'ai' | 'md'
+export type TextVariant = 'description' | 'ai' | 'md' | 'user'
 
 export type BookPage =
   | { kind: 'quote'; content: string }
@@ -34,7 +34,7 @@ export type Book = {
   recommendBody: string
 }
 
-export type BookCommentType = 'description' | 'aiRecommend' | 'mdRecommend' | 'phrase' | 'toc'
+export type BookCommentType = 'description' | 'aiRecommend' | 'mdRecommend' | 'phrase' | 'toc' | 'user'
 
 export type BookComment = {
   bookCommentId: number

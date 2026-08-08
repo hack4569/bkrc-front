@@ -165,7 +165,7 @@ function useFadeHeight(deps: React.DependencyList) {
 
 // ── 타입별 라벨 디자인 (소개/AI/MD/목차) ──────────────────────
 // 타입별 아이콘 + 컬러 라벨 + 액센트선으로 구분.
-type BadgeVariant = 'description' | 'ai' | 'md' | 'toc'
+type BadgeVariant = 'description' | 'ai' | 'md' | 'user' | 'toc'
 
 // 모든 타입 라벨·아이콘·액센트선을 인용 아이콘과 동일한 보라색으로 통일.
 // 타입 구분은 아이콘 모양 + 라벨 텍스트로만.
@@ -175,6 +175,7 @@ const TYPE_CONFIG: Record<BadgeVariant, { label: string; color: string; accent: 
   description: { label: '소개',    color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'book' },
   ai:          { label: 'Essence', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'spark' },
   md:          { label: 'MD 추천', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'pen' },
+  user:        { label: '사용자 추천', color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'pen' },
   toc:         { label: '목차',    color: BADGE_COLOR, accent: BADGE_COLOR, icon: 'list' },
 }
 
