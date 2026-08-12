@@ -11,18 +11,11 @@ export async function getRecommendBooks(): Promise<RecommendView[]> {
   return data
 }
 
-type BookSearchResponse = BookSearchItem[] | {
-  item?: BookSearchItem[]
-  aladinBookResponseList?: BookSearchItem[]
-}
-
 export async function searchBooks(query: string): Promise<BookSearchItem[]> {
-  const response = await fetch(`/api/aladin/search?${new URLSearchParams({ Query: query })}`)
-  const data = await response.json() as BookSearchResponse & { detail?: string }
-  if (!response.ok) throw new Error(data.detail || '책을 검색하지 못했습니다.')
-
-  if (Array.isArray(data)) return data
-  return data.item ?? data.aladinBookResponseList ?? []
+  const { data } = await api.get<BookSearchItem[]>('/v1/aladin/books/search', {
+    params: { query },
+  })
+  return data
 }
 
 export async function createBookRecommendation(
