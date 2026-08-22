@@ -7,7 +7,10 @@ import type {
 } from '../types'
 
 export async function getRecommendBooks(): Promise<RecommendView[]> {
-  const { data } = await api.get<RecommendView[]>('/v1/aladin/books/recommend/user')
+  const { data } = await api.get<RecommendView[]>('/v1/aladin/books/recommend/user', {
+    skipAuth: true,
+    skipAuthRedirect: true,
+  })
   return data
 }
 

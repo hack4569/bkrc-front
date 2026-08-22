@@ -1,8 +1,8 @@
 import { api } from './client'
 import type { LikeResult, UserProfile } from '../types'
 
-export async function getMe(): Promise<UserProfile> {
-  const { data } = await api.get<UserProfile>('/v1/member/me')
+export async function getMe(skipAuthRedirect = false): Promise<UserProfile> {
+  const { data } = await api.get<UserProfile>('/v1/member/me', { skipAuthRedirect })
   return { ...data, recommendedBooks: data.recommendedBooks ?? [] }
 }
 

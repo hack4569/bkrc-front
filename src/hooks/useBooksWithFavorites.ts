@@ -68,7 +68,7 @@ export function useBooksWithFavorites() {
       const token = localStorage.getItem('token')
       if (token) {
         try {
-          const me = await getMe()
+          const me = await getMe(true)
           setFavoriteIds((me.likedBooks ?? []).map((b) => b.itemId))
         } catch {
           setFavoriteIds([])

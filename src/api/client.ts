@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    skipAuthRedirect?: boolean
+    skipAuth?: boolean
+  }
+}
+
 const baseURL = import.meta.env.VITE_API_BASE_URL || '/api'
 
 export const api = axios.create({ baseURL })
@@ -7,7 +14,7 @@ export const api = axios.create({ baseURL })
 // 요청 인터셉터 — 저장된 JWT를 Authorization 헤더에 자동 첨부
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (token && !config.skipAuth) config.headers.Authorization = `Bearer ${token}`
   return config
 })
 
@@ -19,8 +26,9 @@ api.interceptors.response.use(
   (err) => {
     const url: string = err.config?.url ?? ''
     const isLoginRequest = url.includes('/login')
+    const skipAuthRedirect = err.config?.skipAuthRedirect === true
     const status = err.response?.status
-    if ((status === 401 || status === 403) && !isLoginRequest) {
+    if ((status === 401 || status === 403) && !isLoginRequest && !skipAuthRedirect) {
       localStorage.removeItem('token')
       localStorage.removeItem('loginId')
       window.location.href = '/login'
