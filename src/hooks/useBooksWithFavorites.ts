@@ -23,6 +23,8 @@ export function mapRecommendViewToBook(view: RecommendView): Book {
         }]
       case 'description':
         return [{ kind: 'text' as const, label: '소개', variant: 'description' as const, content: comment.comment }]
+      case 'descriptionInsight':
+        return [{ kind: 'text' as const, label: 'Insight', variant: 'descriptionInsight' as const, content: comment.comment }]
       case 'aiRecommend':
         return [{ kind: 'text' as const, label: 'Essence', variant: 'ai' as const, content: comment.comment }]
       case 'user':

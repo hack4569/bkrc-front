@@ -1,7 +1,7 @@
 export interface BookComment {
   bookCommentId: number
   comment: string
-  type: 'phrase' | 'description' | 'aiRecommend' | 'mdRecommend' | 'toc'
+  type: 'phrase' | 'description' | 'descriptionInsight' | 'aiRecommend' | 'mdRecommend' | 'toc'
 }
 
 export interface RecommendView {
