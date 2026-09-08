@@ -32,17 +32,11 @@ export function BookFeed({
   const [sectionDir, setSectionDir] = useState<'next' | 'prev'>('next')
   const [navOpen, setNavOpen] = useState(false)
   const [modalBook, setModalBook] = useState<Book>()
-  const [showGuide, setShowGuide] = useState(false)
+  const [showGuide, setShowGuide] = useState(() => enableGuide && localStorage.getItem('guideDismissed') !== 'true')
   const listRef = useRef<HTMLUListElement>(null)
   const programmaticScroll = useRef(false)
   const viewedIds = useRef<Set<number>>(new Set())
 
-  useEffect(() => {
-    if (!enableGuide) return
-    if (localStorage.getItem('guideDismissed') !== 'true') {
-      setShowGuide(true)
-    }
-  }, [enableGuide])
 
   useEffect(() => {
     const fb = books[activeIndex] ?? books[0]

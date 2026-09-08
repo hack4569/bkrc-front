@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getRecommendBooks } from '../api/books'
+import { typographyFixtureBooks } from '../mock/typographyFixture'
 import { getMe, likeBook, cancelLike } from '../api/user'
 import type { Book, BookCategory, BookPage, RecommendView } from '../types'
 
@@ -63,7 +64,9 @@ export function useBooksWithFavorites() {
 
   useEffect(() => {
     async function load() {
-      const views = await getRecommendBooks()
+      const views = import.meta.env.DEV && new URLSearchParams(window.location.search).has('typographyFixture')
+        ? typographyFixtureBooks
+        : await getRecommendBooks()
       const mapped = views.map(mapRecommendViewToBook)
       setBooks(mapped)
 

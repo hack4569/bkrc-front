@@ -71,3 +71,10 @@
 }
 
 /* Noto Serif KR — Google Fonts(웹폰트)로 로드. index.html <link> 참조. */
+
+@font-face {
+    font-family: 'RIDIBatang';
+    font-weight: 400;
+    src: local('RIDIBatang'),
+        url('https://cdn.jsdelivr.net/gh/fonts-archive/RIDIBatang/RIDIBatang.woff2') format('woff2');
+}

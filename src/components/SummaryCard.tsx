@@ -167,6 +167,14 @@ function useFadeHeight(deps: React.DependencyList) {
 // 타입별 아이콘 + 컬러 라벨 + 액센트선으로 구분.
 type BadgeVariant = 'description' | 'descriptionInsight' | 'ai' | 'md' | 'user' | 'toc'
 
+const TEXT_VARIANT_CLASS: Record<Exclude<BadgeVariant, 'toc'>, string> = {
+  descriptionInsight: ' summary-content-section__content--essence summary-content-section__content--insight',
+  description: ' summary-content-section__content--description',
+  ai: ' summary-content-section__content--essence summary-content-section__content--ai',
+  md: ' summary-content-section__content--md',
+  user: ' summary-content-section__content--user',
+}
+
 // 모든 타입 라벨·아이콘·액센트선을 인용 아이콘과 동일한 보라색으로 통일.
 // 타입 구분은 아이콘 모양 + 라벨 텍스트로만.
 const BADGE_COLOR = '#6b35b0'
@@ -249,11 +257,7 @@ function PageContent({ page }: { page: BookPage }) {
     return <TocPageContent items={page.items} />
   }
   if (page.kind === 'text') {
-    const variantClass = page.variant === 'description'
-      ? ' summary-content-section__content--description'
-      : page.variant === 'descriptionInsight' || page.variant === 'ai'
-      ? ' summary-content-section__content--essence'
-      : ''
+    const variantClass = TEXT_VARIANT_CLASS[page.variant]
     return (
       <>
         <TypeBadge variant={page.variant} />

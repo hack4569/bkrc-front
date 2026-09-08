@@ -37,7 +37,6 @@ export function AccountForm({
   error,
   onSubmit,
   footer,
-  mode: _mode,
 }: Props) {
   const [navOpen, setNavOpen] = useState(false)
 

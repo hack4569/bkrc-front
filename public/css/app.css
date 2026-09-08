@@ -626,6 +626,54 @@
     line-height: 1.4;
     color: #333;
 }
+
+/* 고객 선택 혼합 조판 시작 */
+.summary-content-section__content--insight {
+    font-family: 'RIDIBatang';
+    font-style: normal;
+    font-size: 29px;
+    font-weight: 400;
+    line-height: 1.72;
+    letter-spacing: -0.44px;
+}
+.summary-content-section__content--description {
+    font-family: 'Noto Serif KR';
+    font-style: normal;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1.58;
+    letter-spacing: -0.4px;
+}
+.summary-content-section__content--ai {
+    font-family: 'RIDIBatang';
+    font-style: normal;
+    font-size: 29px;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.44px;
+}
+.summary-content-section--quote .summary-content-section__content {
+    font-family: 'Maru Buri';
+    font-style: normal;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.74;
+    letter-spacing: -0.35px;
+}
+.toc-list__index,
+.toc-list__text {
+    font-family: 'IBM Plex Sans KR';
+    font-style: normal;
+}
+.summary-content-section__content--md {
+    font-family: 'Noto Serif KR';
+    font-style: normal;
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: -0.3px;
+}
+/* 고객 선택 혼합 조판 끝 */
 .summary-about {
     position: absolute;
     bottom: 50px;
