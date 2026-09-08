@@ -570,7 +570,7 @@
     font-weight: 300;
 }
 .summary-content-section--quote .summary-content-section__content {
-    margin-top: 16px;
+    margin-top: 18px;
     font-size: 1.65rem;
     line-height: 1.5;
 }
@@ -591,7 +591,7 @@
     color: #2b2b2b;
 }
 .toc-list {
-    margin: 26px 0 0;
+    margin: 20px 0 0;
     padding: 0;
     list-style: none;
     -webkit-tap-highlight-color: transparent;
@@ -629,6 +629,7 @@
 
 /* 고객 선택 혼합 조판 시작 */
 .summary-content-section__content--insight {
+    margin-top: 13px;
     font-family: 'RIDIBatang';
     font-style: normal;
     font-size: 29px;
@@ -637,6 +638,7 @@
     letter-spacing: -0.44px;
 }
 .summary-content-section__content--description {
+    margin-top: 14px;
     font-family: 'Noto Serif KR';
     font-style: normal;
     font-size: 28px;
@@ -645,6 +647,7 @@
     letter-spacing: -0.4px;
 }
 .summary-content-section__content--ai {
+    margin-top: 17px;
     font-family: 'RIDIBatang';
     font-style: normal;
     font-size: 29px;
@@ -666,6 +669,7 @@
     font-style: normal;
 }
 .summary-content-section__content--md {
+    margin-top: 14px;
     font-family: 'Noto Serif KR';
     font-style: normal;
     font-size: 26px;

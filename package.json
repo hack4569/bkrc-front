@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test:typography": "node scripts/verify-mixed-typography.mjs",
+    "test:category-spacing": "node scripts/verify-category-spacing.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
