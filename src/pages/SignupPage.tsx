@@ -33,9 +33,9 @@ export function SignupPage() {
     <AccountForm
       title="회원가입"
       fields={[
-        { name: 'loginId', label: '아이디', value: loginId, onChange: setLoginId },
-        { name: 'password', label: '비밀번호', type: 'password', value: password, onChange: setPassword },
-        { name: 'passwordCheck', label: '비밀번호 확인', type: 'password', value: passwordCheck, onChange: setPasswordCheck },
+        { name: 'loginId', label: '아이디', value: loginId, placeholder: '아이디를 입력해주세요.', onChange: setLoginId },
+        { name: 'password', label: '비밀번호', type: 'password', value: password, placeholder: '비밀번호를 입력해주세요.', onChange: setPassword },
+        { name: 'passwordCheck', label: '비밀번호 확인', type: 'password', value: passwordCheck, placeholder: '비밀번호를 입력해주세요.', onChange: setPasswordCheck },
       ]}
       submitLabel="가입하기"
       cancelTo="/login"

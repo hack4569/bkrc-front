@@ -9,6 +9,7 @@ export type AccountField = {
   label: string
   type?: string
   value: string
+  placeholder?: string
   readOnly?: boolean
   onChange?: (value: string) => void
 }
@@ -89,7 +90,7 @@ export function AccountForm({
                   type={f.type ?? 'text'}
                   value={f.value}
                   readOnly={f.readOnly}
-                  placeholder={f.readOnly ? '' : '내용을 입력해주세요'}
+                  placeholder={f.readOnly ? '' : (f.placeholder ?? '내용을 입력해주세요')}
                   className="text-field__input"
                   onChange={(e) => f.onChange?.(e.target.value)}
                 />

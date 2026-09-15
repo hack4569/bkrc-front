@@ -25,8 +25,8 @@ export function LoginPage() {
     <AccountForm
       title="로그인"
       fields={[
-        { name: 'loginId', label: '아이디', value: loginId, onChange: setLoginId },
-        { name: 'password', label: '비밀번호', type: 'password', value: password, onChange: setPassword },
+        { name: 'loginId', label: '아이디', value: loginId, placeholder: '아이디를 입력해주세요.', onChange: setLoginId },
+        { name: 'password', label: '비밀번호', type: 'password', value: password, placeholder: '비밀번호를 입력해주세요.', onChange: setPassword },
         {
           name: 'autoLogin',
           label: '자동 로그인',
