@@ -38,18 +38,38 @@ export function AccountForm({
   error,
   onSubmit,
   footer,
+  mode,
 }: Props) {
   const [navOpen, setNavOpen] = useState(false)
 
   return (
-    <main className={`app${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
-      <SubHeader
-        title={title}
-        showMenu={showMenu}
-        menuOpen={navOpen}
-        onMenuOpen={() => setNavOpen((v) => !v)}
-      />
-      <main className="app-main">
+    <main className={`app account-page${mode ? ` account-page--${mode}` : ''}${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
+      {mode === 'login' ? (
+        <header className="login-header">
+          <div className="login-header__brand">
+            <img src="/img/logo.png" alt="" />
+            <span>인생책</span>
+          </div>
+          {showMenu && (
+            <button
+              type="button"
+              className={`icon-button global-header__show-menu-button${navOpen ? ' icon-button--on' : ''}`}
+              aria-label={navOpen ? '메뉴 닫기' : '메뉴 열기'}
+              onClick={() => setNavOpen((v) => !v)}
+            >
+              <span className="icon-hamburger icon-button__icon" />
+            </button>
+          )}
+        </header>
+      ) : (
+        <SubHeader
+          title={title}
+          showMenu={showMenu}
+          menuOpen={navOpen}
+          onMenuOpen={() => setNavOpen((v) => !v)}
+        />
+      )}
+      <main className="app-main account-page__main">
         <form
           className="sign-in-form"
           style={{ height: 'auto' }}
@@ -58,6 +78,14 @@ export function AccountForm({
             onSubmit()
           }}
         >
+          {mode === 'login' && (
+            <section className="login-intro">
+              <div className="login-intro__logo-wrap">
+                <img className="login-intro__logo" src="/img/logo.png" alt="인생책 로고" />
+              </div>
+              <p className="login-intro__eyebrow">BOOK CURATION</p>
+            </section>
+          )}
           {fields.map((f) => {
             if (f.type === 'checkbox') {
               return (

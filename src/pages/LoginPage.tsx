@@ -36,6 +36,7 @@ export function LoginPage() {
         },
       ]}
       submitLabel="로그인"
+      mode="login"
       showCancel={false}
       showMenu
       error={error}

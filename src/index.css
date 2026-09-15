@@ -96,6 +96,259 @@ html, body, #root {
   text-decoration: underline;
 }
 
+/* 모든 폼의 텍스트 입력 스타일을 로그인 화면과 통일 */
+.text-field__input,
+.text-field__area {
+  border-color: #dce4ed;
+  border-radius: 14px;
+  background: #f9fbfd;
+  color: #10253d;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.text-field__input:focus,
+.text-field__area:focus {
+  border-color: #073568;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(7, 53, 104, 0.09);
+}
+
+.text-field__input::placeholder,
+.text-field__area::placeholder {
+  color: #a5b0bc;
+  font-size: 0.9rem;
+}
+
+.text-field__input:read-only {
+  background: #f1f4f7;
+  color: #6d7d8d;
+}
+
+/* 브랜드 로그인 */
+.account-page--login {
+  --login-navy: #073568;
+  --login-navy-deep: #04284f;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(25, 89, 148, 0.12), transparent 28%),
+    radial-gradient(circle at 92% 86%, rgba(7, 53, 104, 0.08), transparent 32%),
+    #f6f8fb;
+  color: #10253d;
+}
+
+.account-page--login::before {
+  position: absolute;
+  top: 100px;
+  right: -68px;
+  width: 170px;
+  height: 170px;
+  border: 1px solid rgba(7, 53, 104, 0.08);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.login-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 64px;
+  padding: 12px 20px;
+  align-items: center;
+}
+
+.login-header__brand {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: var(--login-navy);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.login-header__brand img {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.account-page--login .global-header__show-menu-button {
+  top: 12px;
+  padding: 9px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.account-page--login .global-header__show-menu-button:hover {
+  background: rgba(7, 53, 104, 0.06);
+}
+
+.account-page--login .account-page__main {
+  position: relative;
+  z-index: 1;
+  padding: 10px 18px 32px;
+}
+
+.account-page--login .sign-in-form {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 34px 30px 28px;
+  border: 1px solid rgba(7, 53, 104, 0.08);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 70px rgba(28, 55, 87, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.login-intro {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.login-intro__logo-wrap {
+  display: inline-flex;
+  width: 82px;
+  height: 82px;
+  margin-bottom: 15px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(7, 53, 104, 0.16);
+}
+
+.login-intro__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-intro__eyebrow {
+  margin: 0;
+  color: #52708f;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.account-page--login .text-field {
+  margin-top: 18px;
+}
+
+.account-page--login .text-field:first-of-type {
+  margin-top: 0;
+}
+
+.account-page--login .text-field__label {
+  color: #344b63;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.account-page--login .text-field__input {
+  height: 56px;
+  margin-top: 8px;
+  padding: 0 17px;
+  border-color: #dce4ed;
+  border-radius: 14px;
+  background: #f9fbfd;
+  color: #10253d;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.account-page--login .text-field__input:focus {
+  border-color: var(--login-navy);
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(7, 53, 104, 0.09);
+}
+
+.account-page--login .text-field__input::placeholder {
+  color: #a5b0bc;
+  font-size: 0.9rem;
+}
+
+.account-page--login .text-field--checkbox label {
+  color: #687b8f;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.account-page--login .text-field__checkbox {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: var(--login-navy);
+}
+
+.account-page--login .button--black {
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--login-navy), var(--login-navy-deep));
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  box-shadow: 0 12px 24px rgba(7, 53, 104, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.account-page--login .button--black:active {
+  transform: translateY(1px);
+  box-shadow: 0 6px 14px rgba(7, 53, 104, 0.18);
+}
+
+.account-page--login .sign-in-form__footer {
+  margin-top: 20px;
+  color: #7b8998;
+  font-size: 0.8rem;
+}
+
+.account-page--login .sign-in-form__footer a {
+  margin-left: 4px;
+  color: var(--login-navy);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .account-page--login .account-page__main {
+    padding: 0;
+  }
+
+  .account-page--login .sign-in-form {
+    max-width: none;
+    padding: 22px 24px 30px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .login-intro {
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-height: 720px) {
+  .login-intro__logo-wrap {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+  }
+
+  .login-intro {
+    margin-bottom: 20px;
+  }
+}
+
 .policy-page {
   padding: 18px 20px 56px;
   color: #333;

@@ -146,7 +146,7 @@ export function RecommendPage() {
             <input type="hidden" name="cover" value={selectedBook?.cover ?? ''} />
             <input type="hidden" name="title" value={selectedBook?.title ?? ''} />
             <div className="recommendation-content-form__heading">
-              <label className="text-field__label" htmlFor="recommendation">책 추천 내용</label>
+              <label className="text-field__label" htmlFor="recommendation">왜 이 책을 추천하시나요?</label>
               <span aria-live="polite">{recommendation.length}/{MAX_RECOMMENDATION_LENGTH}</span>
             </div>
             <textarea
@@ -154,7 +154,7 @@ export function RecommendPage() {
               className="text-field__area recommendation-content-form__textarea"
               value={recommendation}
               maxLength={MAX_RECOMMENDATION_LENGTH}
-              placeholder="이 책을 추천하는 이유를 입력해주세요"
+              placeholder="내용을 입력해주세요."
               onChange={(event) => setRecommendation(event.target.value)}
             />
             {error && <p className="text-field__error" role="alert">{error}</p>}
@@ -163,7 +163,7 @@ export function RecommendPage() {
               type="submit"
               disabled={!selectedBook || !recommendation.trim() || isSubmitting}
             >
-              {isSubmitting ? '제출 중' : '제출'}
+              {isSubmitting ? '제출 중' : '등록하기'}
             </button>
           </form>
         </section>
