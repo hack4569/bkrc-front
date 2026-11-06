@@ -287,7 +287,8 @@ html, body, #root {
   accent-color: var(--login-navy);
 }
 
-.account-page--login .button--black {
+.account-page--login .button--black,
+.account-page--login .button--primary {
   border: 0;
   border-radius: 14px;
   background: linear-gradient(135deg, var(--login-navy), var(--login-navy-deep));
@@ -298,7 +299,8 @@ html, body, #root {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.account-page--login .button--black:active {
+.account-page--login .button--black:active,
+.account-page--login .button--primary:active {
   transform: translateY(1px);
   box-shadow: 0 6px 14px rgba(7, 53, 104, 0.18);
 }

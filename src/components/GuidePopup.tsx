@@ -1,4 +1,6 @@
-import { useRef, useState } from 'react'
+import { useReducer, useRef } from 'react'
+import { Button } from './Button'
+import { IconButton } from './IconButton'
 
 type Props = {
   isOpen: boolean
@@ -26,7 +28,7 @@ const SLIDES: Slide[] = [
 ]
 
 export function GuidePopup({ isOpen, onClose }: Props) {
-  const [slideIdx, setSlideIdx] = useState(0)
+  const [slideIdx, moveSlide] = useReducer((current: number, direction: 1 | -1) => Math.max(0, Math.min(SLIDES.length - 1, current + direction)), 0)
   const touchStartX = useRef(0)
 
   if (!isOpen) return null
@@ -43,9 +45,9 @@ export function GuidePopup({ isOpen, onClose }: Props) {
   function handleTouchEnd(e: React.TouchEvent) {
     const dx = touchStartX.current - e.changedTouches[0].clientX
     if (dx > 40 && slideIdx < SLIDES.length - 1) {
-      setSlideIdx((i) => i + 1)
+      moveSlide(1)
     } else if (dx < -40 && slideIdx > 0) {
-      setSlideIdx((i) => i - 1)
+      moveSlide(-1)
     }
   }
 
@@ -70,11 +72,10 @@ export function GuidePopup({ isOpen, onClose }: Props) {
           padding: '28px 0 20px',
         }}
       >
-        <button
-          type="button"
+        <IconButton
+          label="안내 닫기"
           className="close-button guide-dialog__close-button"
           onClick={onClose}
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
         />
 
         <div
@@ -125,22 +126,17 @@ export function GuidePopup({ isOpen, onClose }: Props) {
         </div>
 
         {slideIdx === SLIDES.length - 1 && (
-          <button
-            type="button"
+          <Button
+            variant="text"
             onClick={handleDismissForever}
             style={{
               marginTop: 14,
-              background: 'none',
-              border: 'none',
-              padding: 0,
               fontSize: '0.75rem',
               color: '#b8b8b8',
-              cursor: 'pointer',
-              textDecoration: 'underline',
             }}
           >
             더 이상 보지 않기
-          </button>
+          </Button>
         )}
       </div>
     </div>

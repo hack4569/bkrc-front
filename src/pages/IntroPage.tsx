@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getRecommendBooks } from '../api/books'
 import { MainHeader } from '../components/MainHeader'
 import { GlobalNav } from '../components/GlobalNav'
+import { IconButton } from '../components/IconButton'
 import { QuoteIcon } from '../components/QuoteIcon'
 import { mapRecommendViewToBook } from '../hooks/useBooksWithFavorites'
 import type { Book, BookCategory } from '../types'
@@ -11,15 +12,24 @@ type CategoryFilter = BookCategory | '전체'
 
 export function IntroPage() {
   const { id } = useParams()
-  const [book, setBook] = useState<Book>()
-  const [navOpen, setNavOpen] = useState(false)
-  const [guideOpen, setGuideOpen] = useState(true)
+  const [state, dispatch] = useReducer(
+    (current: { book?: Book; navOpen: boolean; guideOpen: boolean }, action: { type: 'bookLoaded'; book: Book } | { type: 'navToggled' } | { type: 'navClosed' } | { type: 'guideClosed' }) => {
+      switch (action.type) {
+        case 'bookLoaded': return { ...current, book: action.book }
+        case 'navToggled': return { ...current, navOpen: !current.navOpen }
+        case 'navClosed': return { ...current, navOpen: false }
+        case 'guideClosed': return { ...current, guideOpen: false }
+      }
+    },
+    { navOpen: false, guideOpen: true },
+  )
+  const { book, navOpen, guideOpen } = state
 
   useEffect(() => {
     if (!id) return
     getRecommendBooks().then((views) => {
       const found = views.find((v) => String(v.itemId) === id)
-      if (found) setBook(mapRecommendViewToBook(found))
+      if (found) dispatch({ type: 'bookLoaded', book: mapRecommendViewToBook(found) })
     })
   }, [id])
 
@@ -33,7 +43,7 @@ export function IntroPage() {
         title={category}
         menuOpen={navOpen}
         onFavoriteToggle={() => {}}
-        onMenuOpen={() => setNavOpen((v) => !v)}
+        onMenuOpen={() => dispatch({ type: 'navToggled' })}
       />
 
       <main className="app-main">
@@ -71,14 +81,14 @@ export function IntroPage() {
         )}
       </main>
 
-      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <GlobalNav isOpen={navOpen} onClose={() => dispatch({ type: 'navClosed' })} />
 
       {guideOpen && (
         <dialog className="guide-dialog" open>
-          <a
-            href="#"
+          <IconButton
+            label="안내 닫기"
             className="close-button guide-dialog__close-button"
-            onClick={(e) => { e.preventDefault(); setGuideOpen(false) }}
+            onClick={() => dispatch({ type: 'guideClosed' })}
           />
           <img className="guide-dialog__icon" src="/img/icon_book.svg" alt="" />
           <p className="guide-dialog__content">

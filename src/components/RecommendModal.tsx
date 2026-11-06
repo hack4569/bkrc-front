@@ -1,5 +1,7 @@
 import type { Book } from '../types'
 import { BookItem } from './BookItem'
+import { Button } from './Button'
+import { IconButton } from './IconButton'
 import { QuoteIcon } from './QuoteIcon'
 
 type RecommendModalProps = {
@@ -13,22 +15,19 @@ export function RecommendModal({ book, isOpen, onClose }: RecommendModalProps) {
     <section
       className={`recommendation-modal recommendation-modal--${book?.color ?? 'violet'}${isOpen ? ' recommendation-modal--show' : ''}`}
     >
-      <a
-        href="#"
+      <IconButton
+        label="추천 내용 닫기"
         className="close-button recommendation-modal__close-button"
-        onClick={(event) => {
-          event.preventDefault()
-          onClose()
-        }}
-      ></a>
+        onClick={onClose}
+      />
       <main className="recommendation-modal__container">
         <QuoteIcon className="recommendation-modal__icon" />
         <h1 className="recommendation-modal__title">{book?.recommendTitle}</h1>
         <p className="recommendation-modal__content">{book?.recommendBody}</p>
         {book && <BookItem book={book} white className="recommendation-modal__book-item" />}
-        <a href="#" className="button recommendation-modal__edit-button">
+        <Button size="sm" className="recommendation-modal__edit-button">
           수정하기
-        </a>
+        </Button>
       </main>
     </section>
   )

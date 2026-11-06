@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { logout, deleteMember } from '../api/auth'
+import { Button, ButtonLink } from '../components/Button'
 import { SubHeader } from '../components/SubHeader'
 import { GlobalNav } from '../components/GlobalNav'
 import { useMyPage } from '../hooks/useMyPage'
@@ -9,7 +10,7 @@ export function MyPage() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const { profile, likedBooks, recommendedBooks, isLoading, error } = useMyPage()
-  const [navOpen, setNavOpen] = useState(false)
+  const [navOpen, dispatchNav] = useReducer((current: boolean, action: 'toggle' | 'close') => action === 'toggle' ? !current : false, false)
   const activeTab = searchParams.get('tab') === 'recommendations' ? 'recommendations' : 'favorites'
 
   const handleLogout = () => {
@@ -32,7 +33,7 @@ export function MyPage() {
 
   return (
     <main className={`app${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
-      <SubHeader title="마이페이지" menuOpen={navOpen} onMenuOpen={() => setNavOpen((v) => !v)} />
+      <SubHeader title="마이페이지" menuOpen={navOpen} onMenuOpen={() => dispatchNav('toggle')} />
       <main className="app-main">
         <section className="user-info">
           <h2 className="user-info__title">내 정보</h2>
@@ -40,25 +41,25 @@ export function MyPage() {
             <dt className="user-info-list__name">아이디</dt>
             <dd className="user-info-list__value">{profile.loginId}</dd>
           </dl>
-          <Link to="/my/edit" className="button button--black user-info__edit-button">
+          <ButtonLink to="/my/edit" variant="primary" size="sm" className="user-info__edit-button">
             수정하기
-          </Link>
+          </ButtonLink>
           <div className="user-info__actions" style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 22 }}>
-            <button
-              type="button"
+            <Button
+              variant="text"
               onClick={handleLogout}
-              style={{ background: 'none', border: 'none', padding: 0, color: '#fff', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              style={{ color: '#fff', fontSize: '0.8rem' }}
             >
               로그아웃
-            </button>
+            </Button>
             <span aria-hidden="true" style={{ width: 1, height: 11, background: 'rgba(255,255,255,0.35)' }} />
-            <button
-              type="button"
+            <Button
+              variant="text"
               onClick={handleWithdraw}
-              style={{ background: 'none', border: 'none', padding: 0, color: '#b8b8b8', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              style={{ color: '#b8b8b8', fontSize: '0.8rem' }}
             >
               회원 탈퇴
-            </button>
+            </Button>
           </div>
         </section>
         <section className="my-book-lists">
@@ -155,7 +156,7 @@ export function MyPage() {
         </section>
       </main>
 
-      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <GlobalNav isOpen={navOpen} onClose={() => dispatchNav('close')} />
     </main>
   )
 }

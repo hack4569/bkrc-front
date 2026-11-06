@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 import { SubHeader } from './SubHeader'
 import { GlobalNav } from './GlobalNav'
+import { Button, ButtonLink } from './Button'
+import { IconButton } from './IconButton'
 
 export type AccountField = {
   name: string
@@ -40,7 +41,7 @@ export function AccountForm({
   footer,
   mode,
 }: Props) {
-  const [navOpen, setNavOpen] = useState(false)
+  const [navOpen, dispatchNav] = useReducer((current: boolean, action: 'toggle' | 'close') => action === 'toggle' ? !current : false, false)
 
   return (
     <main className={`app account-page${mode ? ` account-page--${mode}` : ''}${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
@@ -51,14 +52,15 @@ export function AccountForm({
             <span>인생책</span>
           </div>
           {showMenu && (
-            <button
-              type="button"
-              className={`icon-button global-header__show-menu-button${navOpen ? ' icon-button--on' : ''}`}
-              aria-label={navOpen ? '메뉴 닫기' : '메뉴 열기'}
-              onClick={() => setNavOpen((v) => !v)}
+            <IconButton
+              label={navOpen ? '메뉴 닫기' : '메뉴 열기'}
+              pressed={navOpen}
+              className="global-header__show-menu-button"
+              aria-expanded={navOpen}
+              onClick={() => dispatchNav('toggle')}
             >
               <span className="icon-hamburger icon-button__icon" />
-            </button>
+            </IconButton>
           )}
         </header>
       ) : (
@@ -66,7 +68,7 @@ export function AccountForm({
           title={title}
           showMenu={showMenu}
           menuOpen={navOpen}
-          onMenuOpen={() => setNavOpen((v) => !v)}
+          onMenuOpen={() => dispatchNav('toggle')}
         />
       )}
       <main className="app-main account-page__main">
@@ -129,9 +131,9 @@ export function AccountForm({
           {error && <p className="text-field__error">{error}</p>}
 
           <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <button type="submit" className="button button--form button--black" style={{ width: '100%', height: 52 }}>{submitLabel}</button>
+            <Button type="submit" variant="primary" size="lg" fullWidth className="button--form">{submitLabel}</Button>
             {showCancel && cancelTo && (
-              <Link to={cancelTo} className="button button--form button--gray" style={{ width: '100%', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>취소</Link>
+              <ButtonLink to={cancelTo} variant="muted" size="lg" fullWidth className="button--form">취소</ButtonLink>
             )}
           </div>
 
@@ -139,7 +141,7 @@ export function AccountForm({
         </form>
       </main>
 
-      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <GlobalNav isOpen={navOpen} onClose={() => dispatchNav('close')} />
     </main>
   )
 }

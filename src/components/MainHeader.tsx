@@ -1,3 +1,5 @@
+import { IconButton } from './IconButton'
+
 type Props = {
   isFavorite: boolean
   title: string
@@ -9,24 +11,27 @@ type Props = {
 export function MainHeader({ isFavorite, title, menuOpen, onFavoriteToggle, onMenuOpen }: Props) {
   return (
     <header className="global-header">
-      <a
-        href="#"
-        className={`icon-button${isFavorite ? ' icon-button--on' : ''} global-header__favorite-button`}
-        onClick={(e) => { e.preventDefault(); onFavoriteToggle() }}
+      <IconButton
+        label={isFavorite ? '찜 해제' : '찜하기'}
+        pressed={isFavorite}
+        className="global-header__favorite-button"
+        onClick={onFavoriteToggle}
       >
         <img className="icon-heart icon-heart--on icon-button__icon icon-button__icon--on" src="/img/icon_heart--on.png" alt="" />
         <img className="icon-heart icon-heart--off icon-button__icon icon-button__icon--off" src="/img/icon_heart--off.png" alt="" />
-      </a>
+      </IconButton>
 
       <span className="global-header__page-title">{title}</span>
 
-      <a
-        href="#"
-        className={`icon-button${menuOpen ? ' icon-button--on' : ''} global-header__show-menu-button`}
-        onClick={(e) => { e.preventDefault(); onMenuOpen() }}
+      <IconButton
+        label={menuOpen ? '메뉴 닫기' : '메뉴 열기'}
+        pressed={menuOpen}
+        className="global-header__show-menu-button"
+        aria-expanded={menuOpen}
+        onClick={onMenuOpen}
       >
         <span className="icon-hamburger icon-button__icon" />
-      </a>
+      </IconButton>
     </header>
   )
 }

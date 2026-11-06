@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer } from 'react'
 import { getRecommendBooks } from '../api/books'
 import { typographyFixtureBooks } from '../mock/typographyFixture'
 import { getMe, likeBook, cancelLike } from '../api/user'
@@ -59,8 +59,21 @@ export function mapRecommendViewToBook(view: RecommendView): Book {
 }
 
 export function useBooksWithFavorites() {
-  const [books, setBooks] = useState<Book[]>([])
-  const [favoriteIds, setFavoriteIds] = useState<number[]>([])
+  const [state, dispatch] = useReducer(
+    (current: { books: Book[]; favoriteIds: number[] }, action:
+      | { type: 'booksLoaded'; books: Book[] }
+      | { type: 'favoritesLoaded'; favoriteIds: number[] }
+      | { type: 'favoriteAdded'; bookId: number }
+      | { type: 'favoriteRemoved'; bookId: number }) => {
+      switch (action.type) {
+        case 'booksLoaded': return { ...current, books: action.books }
+        case 'favoritesLoaded': return { ...current, favoriteIds: action.favoriteIds }
+        case 'favoriteAdded': return { ...current, favoriteIds: [...current.favoriteIds, action.bookId] }
+        case 'favoriteRemoved': return { ...current, favoriteIds: current.favoriteIds.filter((id) => id !== action.bookId) }
+      }
+    },
+    { books: [], favoriteIds: [] },
+  )
 
   useEffect(() => {
     async function load() {
@@ -68,15 +81,15 @@ export function useBooksWithFavorites() {
         ? typographyFixtureBooks
         : await getRecommendBooks()
       const mapped = views.map(mapRecommendViewToBook)
-      setBooks(mapped)
+      dispatch({ type: 'booksLoaded', books: mapped })
 
       const token = localStorage.getItem('token')
       if (token) {
         try {
           const me = await getMe(true)
-          setFavoriteIds((me.likedBooks ?? []).map((b) => b.itemId))
+          dispatch({ type: 'favoritesLoaded', favoriteIds: (me.likedBooks ?? []).map((book) => book.itemId) })
         } catch {
-          setFavoriteIds([])
+          dispatch({ type: 'favoritesLoaded', favoriteIds: [] })
         }
       }
     }
@@ -87,12 +100,12 @@ export function useBooksWithFavorites() {
   async function handleToggleFavorite(bookId: number, isCurrentlyLiked: boolean) {
     if (isCurrentlyLiked) {
       await cancelLike(bookId)
-      setFavoriteIds((prev) => prev.filter((id) => id !== bookId))
+      dispatch({ type: 'favoriteRemoved', bookId })
     } else {
       await likeBook(bookId)
-      setFavoriteIds((prev) => [...prev, bookId])
+      dispatch({ type: 'favoriteAdded', bookId })
     }
   }
 
-  return { books, favoriteIds, handleToggleFavorite }
+  return { books: state.books, favoriteIds: state.favoriteIds, handleToggleFavorite }
 }

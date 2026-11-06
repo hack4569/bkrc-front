@@ -1,3 +1,5 @@
+import { IconButton } from './IconButton'
+
 type Props = {
   title: string
   showMenu?: boolean
@@ -10,13 +12,15 @@ export function SubHeader({ title, showMenu = true, menuOpen = false, onMenuOpen
     <header className="global-header">
       <span className="global-header__page-title">{title}</span>
       {showMenu && (
-        <a
-          href="#"
-          className={`icon-button${menuOpen ? ' icon-button--on' : ''} global-header__show-menu-button`}
-          onClick={(e) => { e.preventDefault(); onMenuOpen?.() }}
+        <IconButton
+          label={menuOpen ? '메뉴 닫기' : '메뉴 열기'}
+          pressed={menuOpen}
+          className="global-header__show-menu-button"
+          aria-expanded={menuOpen}
+          onClick={onMenuOpen}
         >
           <span className="icon-hamburger icon-button__icon" />
-        </a>
+        </IconButton>
       )}
     </header>
   )

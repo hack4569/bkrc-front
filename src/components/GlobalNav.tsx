@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ButtonLink } from './Button'
 
 type GlobalNavProps = {
   isOpen: boolean
@@ -20,13 +21,13 @@ export function GlobalNav({ isOpen, onClose }: GlobalNavProps) {
     >
       <div className="global-nav__container">
         <nav className="global-nav__account-nav" style={{ display: 'none' }}>
-          <Link
+          <ButtonLink
             to={isLoggedIn ? '/my' : '/login'}
-            className="button global-nav__account-nav-button"
+            className="global-nav__account-nav-button"
             onClick={onClose}
           >
             {isLoggedIn ? '마이페이지' : '로그인'}
-          </Link>
+          </ButtonLink>
         </nav>
         <ul className="global-nav-list">
           <li className="global-nav-item">

@@ -39,6 +39,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
 }
 .icon-button__icon {
     display: block;
@@ -249,18 +255,57 @@
     background-color: #fff;
     border: 1px solid #dcdcdc;
     border-radius: 24px;
+    font-family: inherit;
+    cursor: pointer;
 }
+.button--primary,
+.button--primary:visited,
 .button--black,
 .button--black:visited {
     border-color: #fff;
     color: #fff;
     background-color: #000;
 }
+.button--muted,
+.button--muted:visited,
 .button--gray,
 .button--gray:visited {
     border-color: #fff;
     color: #fff;
     background-color: #b8b8b8;
+}
+.button--text,
+.button--text:visited {
+    display: inline-flex;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.button--sm {
+    min-height: 32px;
+    padding: 0 14px;
+}
+.button--md {
+    min-height: 40px;
+    padding: 0 18px;
+}
+.button--lg {
+    min-height: 52px;
+    padding: 0 22px;
+}
+.button--full-width {
+    width: 100%;
+}
+.button:disabled,
+.button[aria-disabled="true"] {
+    cursor: default;
+    opacity: 0.35;
 }
 .global-nav__account-nav-button {
     width: 88px;

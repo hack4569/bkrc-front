@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createBookRecommendation, searchBooks } from '../api/books'
 import { getErrorMessage } from '../api/error'
+import { Button } from '../components/Button'
 import { GlobalNav } from '../components/GlobalNav'
 import { SubHeader } from '../components/SubHeader'
 import type { BookSearchItem } from '../types'
@@ -11,15 +12,25 @@ const MAX_RECOMMENDATION_LENGTH = 100
 
 export function RecommendPage() {
   const navigate = useNavigate()
-  const [navOpen, setNavOpen] = useState(false)
-  const [query, setQuery] = useState('')
-  const [books, setBooks] = useState<BookSearchItem[]>([])
-  const [selectedItemId, setSelectedItemId] = useState<number>()
-  const [recommendation, setRecommendation] = useState('')
-  const [hasSearched, setHasSearched] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string>()
+  const [state, dispatch] = useReducer(
+    (current: { navOpen: boolean; query: string; books: BookSearchItem[]; selectedItemId?: number; recommendation: string; hasSearched: boolean; isSearching: boolean; isSubmitting: boolean; error?: string }, action: { type: string; value?: string | number | boolean; books?: BookSearchItem[]; error?: string }) => {
+      switch (action.type) {
+        case 'navChanged': return { ...current, navOpen: Boolean(action.value) }
+        case 'queryChanged': return { ...current, query: String(action.value ?? '') }
+        case 'searchStarted': return { ...current, error: undefined, isSearching: true, hasSearched: true, selectedItemId: undefined }
+        case 'searchSucceeded': return { ...current, books: action.books ?? [], isSearching: false }
+        case 'searchFailed': return { ...current, books: [], error: action.error, isSearching: false }
+        case 'bookSelected': return { ...current, selectedItemId: Number(action.value) }
+        case 'recommendationChanged': return { ...current, recommendation: String(action.value ?? '') }
+        case 'submitStarted': return { ...current, error: undefined, isSubmitting: true }
+        case 'submitFailed': return { ...current, error: action.error, isSubmitting: false }
+        case 'validationFailed': return { ...current, error: action.error }
+        default: return current
+      }
+    },
+    { navOpen: false, query: '', books: [], recommendation: '', hasSearched: false, isSearching: false, isSubmitting: false },
+  )
+  const { navOpen, query, books, selectedItemId, recommendation, hasSearched, isSearching, isSubmitting, error } = state
   const selectedBook = books.find((book) => book.itemId === selectedItemId)
 
   async function handleSearch(event: FormEvent) {
@@ -27,33 +38,26 @@ export function RecommendPage() {
     const keyword = query.trim()
     if (!keyword || isSearching) return
 
-    setError(undefined)
-    setIsSearching(true)
-    setHasSearched(true)
-    setSelectedItemId(undefined)
+    dispatch({ type: 'searchStarted' })
     try {
-      setBooks(await searchBooks(keyword))
+      dispatch({ type: 'searchSucceeded', books: await searchBooks(keyword) })
     } catch (searchError) {
-      setBooks([])
-      setError(getErrorMessage(searchError, '책을 검색하지 못했습니다. 잠시 후 다시 시도해주세요.'))
-    } finally {
-      setIsSearching(false)
+      dispatch({ type: 'searchFailed', error: getErrorMessage(searchError, '책을 검색하지 못했습니다. 잠시 후 다시 시도해주세요.') })
     }
   }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!selectedBook) {
-      setError('추천할 책을 선택해주세요.')
+      dispatch({ type: 'validationFailed', error: '추천할 책을 선택해주세요.' })
       return
     }
     if (!recommendation.trim()) {
-      setError('책 추천 내용을 입력해주세요.')
+      dispatch({ type: 'validationFailed', error: '책 추천 내용을 입력해주세요.' })
       return
     }
 
-    setError(undefined)
-    setIsSubmitting(true)
+    dispatch({ type: 'submitStarted' })
     try {
       await createBookRecommendation({
         itemId: selectedBook.itemId,
@@ -65,9 +69,7 @@ export function RecommendPage() {
       window.alert('책 추천이 등록되었습니다.')
       navigate('/my?tab=recommendations')
     } catch (submitError) {
-      setError(getErrorMessage(submitError, '책 추천을 등록하지 못했습니다. 잠시 후 다시 시도해주세요.'))
-    } finally {
-      setIsSubmitting(false)
+      dispatch({ type: 'submitFailed', error: getErrorMessage(submitError, '책 추천을 등록하지 못했습니다. 잠시 후 다시 시도해주세요.') })
     }
   }
 
@@ -76,7 +78,7 @@ export function RecommendPage() {
       <SubHeader
         title="책 추천하기"
         menuOpen={navOpen}
-        onMenuOpen={() => setNavOpen((open) => !open)}
+        onMenuOpen={() => dispatch({ type: 'navChanged', value: !navOpen })}
       />
       <main className="app-main">
         <section className="create-recommendation-page">
@@ -90,15 +92,17 @@ export function RecommendPage() {
                 value={query}
                 placeholder="책 제목 또는 저자를 입력해주세요"
                 autoComplete="off"
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => dispatch({ type: 'queryChanged', value: event.target.value })}
               />
-              <button
-                className="button button--black book-search-form__button"
+              <Button
+                variant="primary"
+                className="book-search-form__button"
                 type="submit"
                 disabled={!query.trim() || isSearching}
+                loading={isSearching}
               >
                 {isSearching ? '검색 중' : '검색'}
-              </button>
+              </Button>
             </div>
           </form>
 
@@ -118,7 +122,7 @@ export function RecommendPage() {
                           name="book"
                           value={book.itemId}
                           checked={selectedItemId === book.itemId}
-                          onChange={() => setSelectedItemId(book.itemId)}
+                          onChange={() => dispatch({ type: 'bookSelected', value: book.itemId })}
                         />
                         <img
                           className="book-search-result__cover"
@@ -155,20 +159,22 @@ export function RecommendPage() {
               value={recommendation}
               maxLength={MAX_RECOMMENDATION_LENGTH}
               placeholder="내용을 입력해주세요."
-              onChange={(event) => setRecommendation(event.target.value)}
+              onChange={(event) => dispatch({ type: 'recommendationChanged', value: event.target.value })}
             />
             {error && <p className="text-field__error" role="alert">{error}</p>}
-            <button
-              className="button button--black recommendation-content-form__submit"
+            <Button
+              variant="primary"
+              className="recommendation-content-form__submit"
               type="submit"
               disabled={!selectedBook || !recommendation.trim() || isSubmitting}
+              loading={isSubmitting}
             >
               {isSubmitting ? '제출 중' : '등록하기'}
-            </button>
+            </Button>
           </form>
         </section>
       </main>
-      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <GlobalNav isOpen={navOpen} onClose={() => dispatch({ type: 'navChanged', value: false })} />
     </main>
   )
 }

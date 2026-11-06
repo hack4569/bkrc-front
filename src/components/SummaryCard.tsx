@@ -1,19 +1,12 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react'
 import type { Book, BookPage } from '../types'
 import { QuoteIcon } from './QuoteIcon'
 import { LinkIcon } from './LinkIcon'
+import { useBookFeedContext } from '../contexts/BookFeedContext'
 
 type Props = {
   book: Book
   active: boolean
-  sectionIdx: number
-  dir: 'next' | 'prev'
-  onNext: () => void
-  onPrev: () => void
-  allowVerticalLoop?: boolean
-  onBookClick?: (link: string) => void
-  onHorizontalPrev?: () => void
-  onHorizontalNext?: () => void
 }
 
 const SECTION_CLASS: Record<BookPage['kind'], string> = {
@@ -127,7 +120,7 @@ const FADE_MASK: React.CSSProperties = {
 
 function useFadeHeight(deps: React.DependencyList) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [maxH, setMaxH] = useState(0)
+  const [maxH, dispatchHeight] = useReducer((_: number, value: number) => value, 0)
 
   useLayoutEffect(() => {
     const container = containerRef.current
@@ -141,7 +134,7 @@ function useFadeHeight(deps: React.DependencyList) {
       const coverTop = (saRect && saRect.top > 0 && saRect.top < vvh)
         ? saRect.top
         : vvh - COVER_BOTTOM - COVER_HEIGHT
-      setMaxH(Math.max(0, coverTop - containerTop))
+      dispatchHeight(Math.max(0, coverTop - containerTop))
     }
     measure()
     const ro = new ResizeObserver(measure)
@@ -285,15 +278,17 @@ function PageContent({ page }: { page: BookPage }) {
 export function SummaryCard({
   book,
   active,
-  sectionIdx,
-  dir,
-  onNext,
-  onPrev,
-  allowVerticalLoop = false,
-  onBookClick,
-  onHorizontalPrev,
-  onHorizontalNext,
 }: Props) {
+  const {
+    sectionIdx,
+    direction: dir,
+    onNext,
+    onPrev,
+    allowVerticalLoop,
+    onBookClick,
+    onHorizontalPrev,
+    onHorizontalNext,
+  } = useBookFeedContext()
   const touchStartY = useRef(0)
   const touchStartX = useRef(0)
   const wheelLock = useRef(false)
@@ -357,8 +352,8 @@ export function SummaryCard({
     const dx = touchStartX.current - e.changedTouches[0].clientX
     if (!active) return
     if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 50) onHorizontalNext?.()
-      else if (dx < -50) onHorizontalPrev?.()
+      if (dx > 50) onHorizontalNext()
+      else if (dx < -50) onHorizontalPrev()
       return
     }
     if (dy > 50) {
@@ -374,7 +369,7 @@ export function SummaryCard({
 
   function handleBookClick(e: React.MouseEvent) {
     e.preventDefault()
-    if (onBookClick) onBookClick(book.link)
+    onBookClick(book.link)
   }
 
   const pitchInitialStyle = pitchParams

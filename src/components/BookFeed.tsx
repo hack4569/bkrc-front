@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 import { MainHeader } from './MainHeader'
 import { GlobalNav } from './GlobalNav'
 import { RecommendModal } from './RecommendModal'
 import { SummaryCard } from './SummaryCard'
 import { GuidePopup } from './GuidePopup'
 import type { Book } from '../types'
+import { BookFeedContext } from '../contexts/BookFeedContext'
 
 type BookFeedProps = {
   books: Book[]
@@ -17,6 +18,24 @@ type BookFeedProps = {
   enableGuide?: boolean
 }
 
+type BookFeedState = {
+  activeIndex: number
+  sectionIdx: number
+  sectionDir: 'next' | 'prev'
+  navOpen: boolean
+  modalBook?: Book
+  showGuide: boolean
+}
+
+type BookFeedAction =
+  | { type: 'sectionNext'; lastSection: number }
+  | { type: 'sectionPrev'; lastSection: number }
+  | { type: 'bookChanged'; index: number }
+  | { type: 'navToggled' }
+  | { type: 'navClosed' }
+  | { type: 'modalClosed' }
+  | { type: 'guideClosed' }
+
 // 좌우=책 전환 / 상하=섹션 전환 스와이프 피드. 데이터 소스를 모르고 books를 받기만 한다.
 export function BookFeed({
   books,
@@ -27,12 +46,27 @@ export function BookFeed({
   allowHorizontalLoop = false,
   enableGuide = true,
 }: BookFeedProps) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [sectionIdx, setSectionIdx] = useState(0)
-  const [sectionDir, setSectionDir] = useState<'next' | 'prev'>('next')
-  const [navOpen, setNavOpen] = useState(false)
-  const [modalBook, setModalBook] = useState<Book>()
-  const [showGuide, setShowGuide] = useState(() => enableGuide && localStorage.getItem('guideDismissed') !== 'true')
+  const [state, dispatch] = useReducer(
+    (current: BookFeedState, action: BookFeedAction): BookFeedState => {
+      switch (action.type) {
+        case 'sectionNext': return { ...current, sectionDir: 'next', sectionIdx: current.sectionIdx < action.lastSection ? current.sectionIdx + 1 : 0 }
+        case 'sectionPrev': return { ...current, sectionDir: 'prev', sectionIdx: current.sectionIdx > 0 ? current.sectionIdx - 1 : action.lastSection }
+        case 'bookChanged': return { ...current, activeIndex: action.index, sectionIdx: 0, sectionDir: 'next' }
+        case 'navToggled': return { ...current, navOpen: !current.navOpen }
+        case 'navClosed': return { ...current, navOpen: false }
+        case 'modalClosed': return { ...current, modalBook: undefined }
+        case 'guideClosed': return { ...current, showGuide: false }
+      }
+    },
+    {
+      activeIndex: 0,
+      sectionIdx: 0,
+      sectionDir: 'next',
+      navOpen: false,
+      showGuide: enableGuide && localStorage.getItem('guideDismissed') !== 'true',
+    },
+  )
+  const { activeIndex, sectionIdx, sectionDir, navOpen, modalBook, showGuide } = state
   const listRef = useRef<HTMLUListElement>(null)
   const programmaticScroll = useRef(false)
   const viewedIds = useRef<Set<number>>(new Set())
@@ -52,22 +86,12 @@ export function BookFeed({
 
   function handleSectionNext() {
     const lastSection = currentBook.pages.length - 1
-    setSectionDir('next')
-    if (sectionIdx < lastSection) {
-      setSectionIdx((s) => s + 1)
-    } else {
-      setSectionIdx(0)
-    }
+    dispatch({ type: 'sectionNext', lastSection })
   }
 
   function handleSectionPrev() {
     const lastSection = currentBook.pages.length - 1
-    setSectionDir('prev')
-    if (sectionIdx > 0) {
-      setSectionIdx((s) => s - 1)
-    } else {
-      setSectionIdx(lastSection)
-    }
+    dispatch({ type: 'sectionPrev', lastSection })
   }
 
   function handleScroll() {
@@ -76,9 +100,7 @@ export function BookFeed({
     if (!el) return
     const idx = Math.round(el.scrollLeft / el.clientWidth)
     if (idx !== activeIndex) {
-      setActiveIndex(idx)
-      setSectionIdx(0)
-      setSectionDir('next')
+      dispatch({ type: 'bookChanged', index: idx })
       const id = books[idx].id
       if (!viewedIds.current.has(id)) {
         viewedIds.current.add(id)
@@ -110,13 +132,23 @@ export function BookFeed({
   }
 
   return (
+    <BookFeedContext.Provider value={{
+      sectionIdx,
+      direction: sectionDir,
+      allowVerticalLoop,
+      onNext: handleSectionNext,
+      onPrev: handleSectionPrev,
+      onBookClick: handleBookClick,
+      onHorizontalPrev: handleHorizontalPrev,
+      onHorizontalNext: handleHorizontalNext,
+    }}>
     <main className={`app${navOpen ? ' app--dimmed app--global-nav-open' : ''}`}>
       <MainHeader
         isFavorite={isFavorite}
         title={currentBook?.category ?? ''}
         menuOpen={navOpen}
         onFavoriteToggle={() => currentBook && onToggleFavorite(currentBook.id, isFavorite)}
-        onMenuOpen={() => setNavOpen((v) => !v)}
+        onMenuOpen={() => dispatch({ type: 'navToggled' })}
       />
 
       <main className="app-main">
@@ -130,28 +162,21 @@ export function BookFeed({
               key={book.id}
               book={book}
               active={index === activeIndex}
-              sectionIdx={sectionIdx}
-              dir={sectionDir}
-              allowVerticalLoop={allowVerticalLoop}
-              onNext={handleSectionNext}
-              onPrev={handleSectionPrev}
-              onBookClick={handleBookClick}
-              onHorizontalPrev={handleHorizontalPrev}
-              onHorizontalNext={handleHorizontalNext}
             />
           ))}
         </ul>
       </main>
 
-      <RecommendModal book={modalBook} isOpen={Boolean(modalBook)} onClose={() => setModalBook(undefined)} />
-      <GlobalNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <RecommendModal book={modalBook} isOpen={Boolean(modalBook)} onClose={() => dispatch({ type: 'modalClosed' })} />
+      <GlobalNav isOpen={navOpen} onClose={() => dispatch({ type: 'navClosed' })} />
 
       {showGuide && (
         <GuidePopup
           isOpen={showGuide}
-          onClose={() => setShowGuide(false)}
+          onClose={() => dispatch({ type: 'guideClosed' })}
         />
       )}
     </main>
+    </BookFeedContext.Provider>
   )
 }
