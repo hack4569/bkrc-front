@@ -6,6 +6,11 @@ html, body, #root {
   overflow: hidden;
 }
 
+.coupon-page{height:100dvh;overflow-y:auto;background:#f7f5f2;padding:28px max(20px,calc((100vw - 960px)/2));box-sizing:border-box;color:#202124}
+.coupon-page__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}.coupon-page__header h1{margin:0}.coupon-page__header p{margin:0 0 4px;font-size:12px;letter-spacing:.12em}.coupon-page__header button{border:0;background:transparent;font:inherit;cursor:pointer}
+.coupon-grid{display:grid;gap:16px}.coupon-ticket{display:flex;align-items:stretch;justify-content:space-between;background:#fff;border-radius:18px;box-shadow:0 8px 28px #2c241512;overflow:hidden}.coupon-ticket>div{padding:24px}.coupon-ticket h2{margin:8px 0}.coupon-ticket p,.coupon-ticket small{color:#696969}.coupon-ticket>button{min-width:128px;border:0;background:#24211d;color:#fff;font-weight:700;cursor:pointer}.coupon-ticket__badge{font-size:11px;letter-spacing:.14em;color:#8e6b3e}.coupon-ticket--disabled{opacity:.5}.coupon-empty{text-align:center;padding:80px 0;color:#777}
+@media(max-width:600px){.coupon-ticket{flex-direction:column}.coupon-ticket>button{min-height:52px}.coupon-page{padding:20px}}
+
 /* 모바일 주소창을 고려한 동적 뷰포트 높이 (100vh는 주소창 높이만큼 넘침) */
 .device {
   height: 100dvh;

@@ -30,6 +30,12 @@ export function GlobalNav({ isOpen, onClose }: GlobalNavProps) {
         </nav>
         <ul className="global-nav-list">
           <li className="global-nav-item">
+            <Link to="/coupons" className="global-nav-link" onClick={onClose}>
+              <span className="global-nav-link__icon" aria-hidden="true">🎟️</span>
+              <span className="global-nav-link__name">쿠폰</span>
+            </Link>
+          </li>
+          <li className="global-nav-item">
             <Link to={isLoggedIn ? '/my' : '/login'} className="global-nav-link" onClick={onClose}>
               <img className="global-nav-link__icon" src="/img/icon_user.svg" alt="" />
               <span className="global-nav-link__name">{isLoggedIn ? '마이페이지' : '로그인'}</span>

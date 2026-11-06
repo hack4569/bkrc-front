@@ -8,6 +8,8 @@ import { MyRecommendationPage } from './pages/MyRecommendationPage'
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage'
 import { RecommendPage } from './pages/RecommendPage'
 import { SignupPage } from './pages/SignupPage'
+import { CouponPage } from './pages/CouponPage'
+import { MyCouponPage } from './pages/MyCouponPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token')
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/coupons" element={<CouponPage />} />
+        <Route path="/coupons/my" element={<ProtectedRoute><MyCouponPage /></ProtectedRoute>} />
         <Route path="/recommend" element={<ProtectedRoute><RecommendPage /></ProtectedRoute>} />
         <Route path="/my" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
         <Route path="/my/recommendations/:itemId" element={<ProtectedRoute><MyRecommendationPage /></ProtectedRoute>} />
